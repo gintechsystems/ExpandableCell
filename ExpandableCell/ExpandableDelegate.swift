@@ -49,6 +49,10 @@ public protocol ExpandableDelegate: UIScrollViewDelegate {
     func expandableTableView(_ expandableTableView: ExpandableTableView, willDisplayHeaderView view: UIView, forSection section: Int)
 
     func expandableTableView(_ expandableTableView: ExpandableTableView, willDisplayFooterView view: UIView, forSection section: Int)
+    
+    func expandableTableView(_ expandableTableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath?
+    
+    func expandableTableView(_ expandableTableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath?
 
     func expandableTableView(_ expandableTableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool
 
@@ -92,11 +96,17 @@ public extension ExpandableDelegate {
     func expandableTableView(_ expandableTableView: ExpandableTableView, willDisplayHeaderView view: UIView, forSection section: Int) { }
 
     func expandableTableView(_ expandableTableView: ExpandableTableView, willDisplayFooterView view: UIView, forSection section: Int) { }
+    
+    func expandableTableView(_ expandableTableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? { return nil }
+    
+    func expandableTableView(_ expandableTableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? { return nil }
 
-    func expandableTableView(_ expandableTableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool { return false }
+    func expandableTableView(_ expandableTableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool { return true }
 
     func expandableTableView(_ expandableTableView: UITableView, didHighlightRowAt indexPath: IndexPath) { }
 
     func expandableTableView(_ expandableTableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) { }
+    
     func expandableTableView(_ expandableTableView: UITableView, didCloseRowAt indexPath: IndexPath) { }
 }
+

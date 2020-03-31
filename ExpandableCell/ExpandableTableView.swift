@@ -222,29 +222,29 @@ extension ExpandableTableView: UITableViewDataSource, UITableViewDelegate {
 
 // MARK: Optional methods
 extension ExpandableTableView {
-	public func openAll() {
-		guard let delegate = expandableDelegate else { return }
-		
-		var rowCountInSections = [(rowCount:Int, section: Int)]()
-		let sections = delegate.numberOfSections(in: self)
-		
-		for sectionNum in 0..<sections {
-			var rows = delegate.expandableTableView(self, numberOfRowsInSection: sectionNum)
-			for rowNum in 0..<rows {
-				let indexPath = IndexPath(row: rowNum, section: sectionNum)
-				if let expandedCells = delegate.expandableTableView(self, expandedCellsForRowAt: indexPath) {
-					rows += expandedCells.count
-				}
-			}
-			rowCountInSections.append((rows, sectionNum))
-		}
-		
-		for rowCountInSection in rowCountInSections {
-			for row in 0..<rowCountInSection.rowCount {
+    public func openAll() {
+        guard let delegate = expandableDelegate else { return }
+        
+        var rowCountInSections = [(rowCount:Int, section: Int)]()
+        let sections = delegate.numberOfSections(in: self)
+        
+        for sectionNum in 0..<sections {
+            var rows = delegate.expandableTableView(self, numberOfRowsInSection: sectionNum)
+            for rowNum in 0..<rows {
+                let indexPath = IndexPath(row: rowNum, section: sectionNum)
+                if let expandedCells = delegate.expandableTableView(self, expandedCellsForRowAt: indexPath) {
+                    rows += expandedCells.count
+                }
+            }
+            rowCountInSections.append((rows, sectionNum))
+        }
+        
+        for rowCountInSection in rowCountInSections {
+            for row in 0..<rowCountInSection.rowCount {
                 open(at: IndexPath(row: row, section: rowCountInSection.section))
-			}
-		}
-	}
+            }
+        }
+    }
     
     func openAllInitiallyExpanded() {
         guard let delegate = expandableDelegate else { return }
@@ -268,15 +268,15 @@ extension ExpandableTableView {
             open(at: indexPath)
         }
     }
-	
+    
     public func open(at indexPath: IndexPath) {
-		guard let delegate = expandableDelegate else { return }
-		
-		let expandedData = expandableProcessor.isExpandedCell(at: indexPath)
-		if !expandedData.isExpandedCell && expandableProcessor.isExpandable(at: indexPath) {
-			open(indexPath: indexPath, delegate: delegate)
-		}
-	}
+        guard let delegate = expandableDelegate else { return }
+        
+        let expandedData = expandableProcessor.isExpandedCell(at: indexPath)
+        if !expandedData.isExpandedCell && expandableProcessor.isExpandable(at: indexPath) {
+            open(indexPath: indexPath, delegate: delegate)
+        }
+    }
     
     public func reloadExpandableExpandedCells(at indexPaths: [IndexPath]) {
         guard let delegate = expandableDelegate else { return }
@@ -412,8 +412,18 @@ extension ExpandableTableView {
         return delegate.expandableTableView(self, willDisplayFooterView: view, forSection: section)
     }
     
+    public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        guard let delegate = expandableDelegate else { return nil }
+        return delegate.expandableTableView(self, willSelectRowAt: indexPath)
+    }
+    
+    public func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
+        guard let delegate = expandableDelegate else { return nil }
+        return delegate.expandableTableView(self, willDeselectRowAt: indexPath)
+    }
+    
     public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-         guard let delegate = expandableDelegate else { return false }
+        guard let delegate = expandableDelegate else { return false }
         return delegate.expandableTableView(self, shouldHighlightRowAt: indexPath)
     }
     
@@ -427,3 +437,4 @@ extension ExpandableTableView {
         return delegate.expandableTableView(self, didUnhighlightRowAt: indexPath)
     }
 }
+
