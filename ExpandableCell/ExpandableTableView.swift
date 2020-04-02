@@ -361,6 +361,20 @@ extension ExpandableTableView {
         return indexPaths
     }
     
+    public func deselectExpandedRows(section :Int) {
+        if let rows = self.indexPathsForSelectedRows {
+            for indexPath in rows {
+                if (indexPath.section != section) {
+                    continue
+                }
+                
+                if let cell = self.expandableProcessor.expandedCell(at: indexPath) {
+                    cell.setSelected(false, animated: false)
+                }
+            }
+        }
+    }
+    
     public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard let delegate = expandableDelegate else { return nil }
         return delegate.expandableTableView(self, titleForHeaderInSection: section)
